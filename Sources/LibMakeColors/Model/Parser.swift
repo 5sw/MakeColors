@@ -1,12 +1,11 @@
 import Foundation
 
-
-extension CharacterSet {
+private extension CharacterSet {
     static let hex = CharacterSet(charactersIn: "0123456789abcdef")
     static let name = alphanumerics.union(CharacterSet.init(charactersIn: "_/"))
 }
 
-extension Collection {
+private extension Collection {
     func chunks(size: Int) -> UnfoldSequence<Self.SubSequence, Self.Index> {
         sequence(state: startIndex) { state -> SubSequence? in
             guard state != endIndex else { return nil }
