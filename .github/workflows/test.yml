@@ -14,14 +14,15 @@ jobs:
 
       - name: Cache Swift packages
         uses: actions/cache@v2
-        env:
-          cache-name: cache-swift-packages
         with:
-          path:
-              - .build/checkouts
-              - .build/repositories
-              - .build/workspace-state.json
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('Package.resolved') }}
+          path: |
+              .build/checkouts
+              .build/repositories
+              .build/workspace-state.json
+          key: ${{ runner.os }}-${{ hashFiles('Package.resolved') }}
+
+      - name: Build
+        run: swift build
 
       - name: Run tests
         run: swift test
