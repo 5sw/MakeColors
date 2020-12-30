@@ -11,5 +11,17 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v1
+
+      - name: Cache Swift packages
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-swift-packages
+        with:
+          path:
+              - .build/checkouts
+              - .build/repositories
+              - .build/workspace-state.json
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('Package.resolved') }}
+
       - name: Run tests
         run: swift test
