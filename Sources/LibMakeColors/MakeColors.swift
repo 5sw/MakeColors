@@ -76,8 +76,8 @@ public final class MakeColors: ParsableCommand, Context {
         if let output = output {
             return URL(fileURLWithPath: output)
         } else {
-            let b = URL(fileURLWithPath: input).deletingPathExtension().lastPathComponent
-            return URL(fileURLWithPath: b).appendingPathExtension(`extension`)
+            let basename = URL(fileURLWithPath: input).deletingPathExtension().lastPathComponent
+            return URL(fileURLWithPath: basename).appendingPathExtension(`extension`)
         }
     }
 }
