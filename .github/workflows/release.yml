@@ -2,31 +2,36 @@ on:
   release:
     types: [created]
 
-name: Upload tarball for release
+name: Create new formula version
 
 jobs:
   upload-release:
     name: Upload Release Asset
     runs-on: ubuntu-latest
     steps:
-      - name: Set release tarball name
-        run: |
-            echo "TARBALL_NAME=$(echo MakeColors-${GITHUB_REF##*/v})" >> $GITHUB_ENV
-
-      - name: Checkout code
+      - name: Checkout formula repo
         uses: actions/checkout@v2
-
-      - name: Pack tarball
-        run: |
-          git archive HEAD --prefix=${{ env.TARBALL_NAME }}/ | bzip2 > ${{ env.TARBALL_NAME }}.tar.bz2
-
-      - name: Upload Release Asset
-        id: upload
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./${{ env.TARBALL_NAME }}.tar.bz2
-          asset_name: ${{ env.TARBALL_NAME }}.tar.bz2
-          asset_content_type: application/x-bzip2
+            repository: ${{ github.repository_owner }}/homebrew-makecolors
+            token: ${{ secrets.PUBLISH_FORMULA_TOKEN }}
+      - name: Update formula
+        run: |
+            cat << EOF > Formula/make-colors.rb
+            class MakeColors < Formula
+              desc "Converts a simple list of color definitions to asset catalogs for Xcode and resource XML for Android"
+              homepage "https://github.com/${{ github.repository }}"
+              url "https://github.com/${{ github.repository }}.git", :tag => "${{ github.event.release.tag_name }}", :revision => "${{ github.sha }}"
+              head "https://github.com/${{ github.repository }}.git"
+              license "MIT"
+
+              depends_on :xcode => ["12.0", :build]
+
+              def install
+                system "make", "install", "prefix=#{prefix}"
+              end
+            end
+            EOF
+
+            git add Formula/make-colors.rb
+            git commit -m "Update formula for ${{ github.event.release.tag_name }}"
+            git push
