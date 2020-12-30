@@ -10,7 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set release tarball name
-        run: echo ::set-env name=TARBALL_NAME::$(echo MakeColors-${GITHUB_REF##*/v})
+        run: |
+            echo "TARBALL_NAME=$(echo MakeColors-${GITHUB_REF##*/v})" >> $GITHUB_ENV
 
       - name: Checkout code
         uses: actions/checkout@v2
