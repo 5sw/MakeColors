@@ -2,6 +2,15 @@
 
 Converts a simple list of color definitions to asset catalogs for Xcode, resource XML for Android or an HTML preview.
 
+## Installation
+
+Install via [Homebrew](https://brew.sh):
+
+```
+brew tap 5sw/makecolors
+brew install make-colors
+```
+
 ## Input format
 
 Each line in your input contains one color definition. That is a name followed by the actual color. We support RGB colors in a few formats similar to CSS:
