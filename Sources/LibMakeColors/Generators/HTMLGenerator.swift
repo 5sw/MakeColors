@@ -8,7 +8,7 @@ final class HTMLGenerator: Generator {
         self.context = context
     }
 
-    func generate(data: [String : ColorDef]) throws -> FileWrapper {
+    func generate(data: [String: ColorDef]) throws -> FileWrapper {
         var html = """
         <html>
         <head>

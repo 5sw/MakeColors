@@ -15,15 +15,18 @@ let package = Package(
         .target(
             name: "MakeColors",
             dependencies: [
-                "LibMakeColors"
-            ]),
+                "LibMakeColors",
+            ]
+        ),
         .target(
             name: "LibMakeColors",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
-            ]),
+            ]
+        ),
         .testTarget(
             name: "MakeColorsTests",
-            dependencies: ["LibMakeColors"]),
+            dependencies: ["LibMakeColors"]
+        ),
     ]
 )

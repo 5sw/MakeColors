@@ -2,7 +2,7 @@ import Foundation
 
 private extension CharacterSet {
     static let hex = CharacterSet(charactersIn: "0123456789abcdef")
-    static let name = alphanumerics.union(CharacterSet.init(charactersIn: "_/"))
+    static let name = alphanumerics.union(CharacterSet(charactersIn: "_/"))
 }
 
 private extension Collection {
@@ -16,22 +16,21 @@ private extension Collection {
     }
 }
 
-
 extension Scanner {
     func string(_ s: String) -> Bool {
-        return scanString(s) != nil
+        scanString(s) != nil
     }
 
     func color() -> Color? {
         if string("#"), let digits = scanCharacters(from: .hex) {
             switch digits.count {
-            case 3, 4: //rgb(a)
+            case 3, 4: // rgb(a)
                 let digits = digits.chunks(size: 1)
                     .compactMap { UInt8($0, radix: 16) }
                     .map { $0 << 4 | $0 }
                 return Color(digits)
 
-            case 6, 8: //rrggbb(aa)
+            case 6, 8: // rrggbb(aa)
                 let digits = digits.chunks(size: 2).compactMap { UInt8($0, radix: 16) }
                 return Color(digits)
 
@@ -76,9 +75,11 @@ extension Scanner {
     }
 
     func colorLine() -> (String, ColorDef)? {
-        guard let name = self.name(),
-              let def = colorDef(),
-              endOfLine() else {
+        guard
+            let name = self.name(),
+            let def = colorDef(),
+            endOfLine()
+        else {
             return nil
         }
         return (name, def)
@@ -91,7 +92,6 @@ extension Scanner {
         _ = scanCharacters(from: .whitespacesAndNewlines)
         return true
     }
-
 
     func colorList() throws -> [String: ColorDef] {
         var result: [String: ColorDef] = [:]
@@ -121,5 +121,3 @@ extension Scanner {
         return result
     }
 }
-
-

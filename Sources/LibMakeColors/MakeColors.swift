@@ -11,7 +11,7 @@ private struct GeneratorOption: EnumerableFlag, CustomStringConvertible {
     static let allCases: [GeneratorOption] = [
         .init(type: AssetCatalogGenerator.self),
         .init(type: AndroidGenerator.self),
-        .init(type: HTMLGenerator.self)
+        .init(type: HTMLGenerator.self),
     ]
 
     static func == (lhs: GeneratorOption, rhs: GeneratorOption) -> Bool {
@@ -54,7 +54,11 @@ public final class MakeColors: ParsableCommand, Context {
             let resolved = try data.resolve(key)
             switch color {
             case .color: print(key.insertCamelCaseSeparators(), resolved, separator: ": ")
-            case .reference(let r): print("\(key.insertCamelCaseSeparators()) (@\(r.insertCamelCaseSeparators()))", resolved, separator: ": ")
+            case let .reference(r): print(
+                    "\(key.insertCamelCaseSeparators()) (@\(r.insertCamelCaseSeparators()))",
+                    resolved,
+                    separator: ": "
+                )
             }
         }
 
@@ -73,4 +77,3 @@ public final class MakeColors: ParsableCommand, Context {
         }
     }
 }
-

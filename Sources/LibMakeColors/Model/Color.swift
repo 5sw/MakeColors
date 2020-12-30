@@ -17,7 +17,7 @@ struct Color: CustomStringConvertible, Equatable {
     }
 
     var description: String {
-        return a != 0xFF ? String(format: "#%02X%02X%02X%02X", r, g, b, a): String(format: "#%02X%02X%02X", r, g, b)
+        a != 0xFF ? String(format: "#%02X%02X%02X%02X", r, g, b, a) : String(format: "#%02X%02X%02X", r, g, b)
     }
 }
 
@@ -37,10 +37,10 @@ extension Dictionary where Key == String, Value == ColorDef {
         case nil:
             throw Errors.missingReference(name)
 
-        case .color(let color):
+        case let .color(color):
             return color
 
-        case .reference(let referenced):
+        case let .reference(referenced):
             return try resolve(referenced, visited: visited)
         }
     }
@@ -56,5 +56,4 @@ extension Dictionary where Key == String, Value == ColorDef {
         case let ((left, _), (right, _)): return left.localizedStandardCompare(right) == .orderedAscending
         }
     }
-
 }

@@ -1,0 +1,14 @@
+--header strip
+--wraparguments before-first
+--wrapcollections before-first
+--wrapconditions before-first
+--wrapparameters before-first
+--semicolons never
+--ranges no-space
+--exclude Pods,Generated
+
+--disable anyObjectProtocol,redundantRawValues
+--enable wrapEnumCases,isEmpty
+
+--maxwidth 120
+

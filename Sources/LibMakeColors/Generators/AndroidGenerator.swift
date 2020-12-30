@@ -9,7 +9,7 @@ final class AndroidGenerator: Generator {
         self.context = context
     }
 
-    func generate(data: [String : ColorDef]) throws -> FileWrapper {
+    func generate(data: [String: ColorDef]) throws -> FileWrapper {
         var xml = """
         <?xml version="1.0" encoding="utf-8"?>
         <resources>
@@ -23,8 +23,8 @@ final class AndroidGenerator: Generator {
 
             let value: String
             switch color {
-            case .color(let colorValue): value = colorValue.description
-            case .reference(let ref): value = "@color/\(prefix)\(ref.camelCasePathToSnakeCase())"
+            case let .color(colorValue): value = colorValue.description
+            case let .reference(ref): value = "@color/\(prefix)\(ref.camelCasePathToSnakeCase())"
             }
 
             xml += """

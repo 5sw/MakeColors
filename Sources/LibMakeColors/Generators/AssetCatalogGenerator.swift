@@ -10,8 +10,8 @@ final class AssetCatalogGenerator: Generator {
         self.context = context
     }
 
-    func generate(data: [String : ColorDef]) throws -> FileWrapper {
-        let root = FileWrapper(directoryWithFileWrappers: ["Contents.json" : FileWrapper(catalog)])
+    func generate(data: [String: ColorDef]) throws -> FileWrapper {
+        let root = FileWrapper(directoryWithFileWrappers: ["Contents.json": FileWrapper(catalog)])
         let colorRoot: FileWrapper
 
         if let prefix = context.prefix?.insertCamelCaseSeparators() {
@@ -53,7 +53,7 @@ final class AssetCatalogGenerator: Generator {
 
 private extension Color {
     func json() -> String {
-        return """
+        """
         {
         "colors" : [
             {
@@ -79,11 +79,10 @@ private extension Color {
 
     func fileWrapper() -> FileWrapper {
         FileWrapper(directoryWithFileWrappers: [
-            "Contents.json": FileWrapper(json())
+            "Contents.json": FileWrapper(json()),
         ])
     }
 }
-
 
 private let group = """
 {
