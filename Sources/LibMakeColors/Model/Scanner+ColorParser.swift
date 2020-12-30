@@ -1,26 +1,6 @@
 import Foundation
 
-private extension CharacterSet {
-    static let hex = CharacterSet(charactersIn: "0123456789abcdef")
-    static let name = alphanumerics.union(CharacterSet(charactersIn: "_/"))
-}
-
-private extension Collection {
-    func chunks(size: Int) -> UnfoldSequence<Self.SubSequence, Self.Index> {
-        sequence(state: startIndex) { state -> SubSequence? in
-            guard state != endIndex else { return nil }
-            let next = index(state, offsetBy: size, limitedBy: endIndex) ?? endIndex
-            defer { state = next }
-            return self[state..<next]
-        }
-    }
-}
-
 extension Scanner {
-    func string(_ s: String) -> Bool {
-        scanString(s) != nil
-    }
-
     func color() -> Color? {
         if string("#"), let digits = scanCharacters(from: .hex) {
             switch digits.count {
@@ -34,7 +14,8 @@ extension Scanner {
                 let digits = digits.chunks(size: 2).compactMap { UInt8($0, radix: 16) }
                 return Color(digits)
 
-            default: return nil
+            default:
+                return nil
             }
         }
 
@@ -110,6 +91,7 @@ extension Scanner {
         return result
     }
 
+    // swiftlint:disable:next discouraged_optional_collection
     func commaSeparated() -> [UInt8]? {
         var result: [UInt8] = []
         repeat {
@@ -119,5 +101,27 @@ extension Scanner {
             result.append(component)
         } while string(",")
         return result
+    }
+}
+
+private extension Scanner {
+    func string(_ string: String) -> Bool {
+        scanString(string) != nil
+    }
+}
+
+private extension CharacterSet {
+    static let hex = CharacterSet(charactersIn: "0123456789abcdef")
+    static let name = alphanumerics.union(CharacterSet(charactersIn: "_/"))
+}
+
+private extension Collection {
+    func chunks(size: Int) -> UnfoldSequence<Self.SubSequence, Self.Index> {
+        sequence(state: startIndex) { state -> SubSequence? in
+            guard state != endIndex else { return nil }
+            let next = index(state, offsetBy: size, limitedBy: endIndex) ?? endIndex
+            defer { state = next }
+            return self[state..<next]
+        }
     }
 }

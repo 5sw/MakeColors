@@ -23,8 +23,11 @@ final class AndroidGenerator: Generator {
 
             let value: String
             switch color {
-            case let .color(colorValue): value = colorValue.description
-            case let .reference(ref): value = "@color/\(prefix)\(ref.camelCasePathToSnakeCase())"
+            case let .color(colorValue):
+                value = colorValue.description
+
+            case let .reference(ref):
+                value = "@color/\(prefix)\(ref.camelCasePathToSnakeCase())"
             }
 
             xml += """

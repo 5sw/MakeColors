@@ -2,17 +2,17 @@ import ArgumentParser
 import Foundation
 
 private struct GeneratorOption: EnumerableFlag, CustomStringConvertible {
-    let type: Generator.Type
-
-    var description: String {
-        type.option
-    }
-
     static let allCases: [GeneratorOption] = [
         .init(type: AssetCatalogGenerator.self),
         .init(type: AndroidGenerator.self),
         .init(type: HTMLGenerator.self),
     ]
+
+    let type: Generator.Type
+
+    var description: String {
+        type.option
+    }
 
     static func == (lhs: GeneratorOption, rhs: GeneratorOption) -> Bool {
         lhs.type == rhs.type
@@ -53,9 +53,12 @@ public final class MakeColors: ParsableCommand, Context {
         for (key, color) in data.sorted() {
             let resolved = try data.resolve(key)
             switch color {
-            case .color: print(key.insertCamelCaseSeparators(), resolved, separator: ": ")
-            case let .reference(r): print(
-                    "\(key.insertCamelCaseSeparators()) (@\(r.insertCamelCaseSeparators()))",
+            case .color:
+                print(key.insertCamelCaseSeparators(), resolved, separator: ": ")
+
+            case let .reference(referenced):
+                print(
+                    "\(key.insertCamelCaseSeparators()) (@\(referenced.insertCamelCaseSeparators()))",
                     resolved,
                     separator: ": "
                 )

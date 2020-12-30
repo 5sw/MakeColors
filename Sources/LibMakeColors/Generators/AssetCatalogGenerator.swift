@@ -60,10 +60,10 @@ private extension Color {
             "color" : {
                 "color-space" : "srgb",
                 "components" : {
-                "alpha" : "\(Float(a) / 256)",
-                "blue" : "0x\(String(b, radix: 16))",
-                "green" : "0x\(String(g, radix: 16))",
-                "red" : "0x\(String(r, radix: 16))"
+                "alpha" : "\(Float(alpha) / 256)",
+                "blue" : "0x\(String(blue, radix: 16))",
+                "green" : "0x\(String(green, radix: 16))",
+                "red" : "0x\(String(red, radix: 16))"
                 }
             },
             "idiom" : "universal"
