@@ -1,0 +1,3 @@
+import LibMakeColors
+
+MakeColors.main()
