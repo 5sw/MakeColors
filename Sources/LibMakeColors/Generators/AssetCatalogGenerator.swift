@@ -51,6 +51,13 @@ final class AssetCatalogGenerator: Generator {
     }
 }
 
+private let infoTag = """
+"info" : {
+    "author" : "de.5sw.MakeColors",
+    "version" : 1
+}
+"""
+
 private extension Color {
     func json() -> String {
         """
@@ -69,10 +76,7 @@ private extension Color {
             "idiom" : "universal"
             }
         ],
-        "info" : {
-            "author" : "xcode",
-            "version" : 1
-        }
+        \(infoTag)
         }
         """
     }
@@ -86,21 +90,15 @@ private extension Color {
 
 private let group = """
 {
-  "info" : {
-    "author" : "xcode",
-    "version" : 1
-  },
   "properties" : {
     "provides-namespace" : true
-  }
+  },
+  \(infoTag)
 }
 """
 
 private let catalog = """
 {
-  "info" : {
-    "author" : "xcode",
-    "version" : 1
-  }
+\(infoTag)
 }
 """
