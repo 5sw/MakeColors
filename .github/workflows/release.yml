@@ -1,0 +1,31 @@
+on:
+  release:
+    types: [created]
+
+name: Upload tarball for release
+
+jobs:
+  upload-release:
+    name: Upload Release Asset
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set release tarball name
+        run: echo ::set-env name=TARBALL_NAME::$(echo MakeColors-${GITHUB_REF##*/v})
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Pack tarball
+        run: |
+          git archive HEAD --prefix=${{ env.TARBALL_NAME }}/ | bzip2 > ${{ env.TARBALL_NAME }}.tar.bz2
+
+      - name: Upload Release Asset
+        id: upload
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./${{ env.TARBALL_NAME }}.tar.bz2
+          asset_name: ${{ env.TARBALL_NAME }}.tar.bz2
+          asset_content_type: application/x-bzip2
