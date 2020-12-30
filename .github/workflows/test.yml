@@ -1,13 +1,10 @@
-name: Test
+name: Build and run tests
 
 on:
   pull_request:
-    paths:
-      - '.github/workflows/test.yml'
-      - '**/*.swift'
 
 jobs:
-  SwiftLint:
+  BuildAndTest:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v1
