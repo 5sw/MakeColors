@@ -6,7 +6,7 @@ name: Create new formula version
 
 jobs:
   upload-release:
-    name: Upload Release Asset
+    name: Create new formula version
     runs-on: ubuntu-latest
     steps:
       - name: Checkout formula repo
@@ -31,6 +31,9 @@ jobs:
               end
             end
             EOF
+
+            git config user.name github-actions
+            git config user.email github-actions@github.com
 
             git add Formula/make-colors.rb
             git commit -m "Update formula for ${{ github.event.release.tag_name }}"
