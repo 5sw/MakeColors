@@ -1,0 +1,25 @@
+name: Build and run tests
+
+on:
+  pull_request:
+
+jobs:
+  BuildAndTest:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Cache Swift packages
+        uses: actions/cache@v2
+        with:
+          path: |
+              .build/checkouts
+              .build/repositories
+              .build/workspace-state.json
+          key: ${{ runner.os }}-${{ hashFiles('Package.resolved') }}
+
+      - name: Build
+        run: swift build
+
+      - name: Run tests
+        run: swift test
