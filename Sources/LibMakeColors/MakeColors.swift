@@ -24,6 +24,8 @@ enum Errors: Error {
     case duplicateColor(String)
     case missingReference(String)
     case cyclicReference(String)
+    case cannotWriteWrapperToStdout
+    case cannotReadStdin
 }
 
 public final class MakeColors: ParsableCommand, Context {
@@ -42,10 +44,7 @@ public final class MakeColors: ParsableCommand, Context {
     public init() {}
 
     public func run() throws {
-        let url = URL(fileURLWithPath: input)
-        let string = try String(contentsOf: url)
-
-        let scanner = Scanner(string: string)
+        let scanner = Scanner(string: try readInput())
         scanner.charactersToBeSkipped = .whitespaces
 
         let data = try scanner.colorList()
@@ -68,9 +67,43 @@ public final class MakeColors: ParsableCommand, Context {
         let generator = formatter.type.init(context: self)
         let fileWrapper = try generator.generate(data: data)
 
-        let writeURL = outputURL(extension: formatter.type.defaultExtension)
-        try fileWrapper.write(to: writeURL, options: .atomic, originalContentsURL: nil)
+        try writeOutput(fileWrapper)
     }
+
+    func readInput() throws -> String {
+        if input == "-" {
+            return try readStdin()
+        }
+
+        let url = URL(fileURLWithPath: input)
+        return try String(contentsOf: url)
+    }
+
+    func readStdin() throws -> String {
+        guard
+            let data = try FileHandle.standardInput.readToEnd(),
+            let input = String(data: data, encoding: .utf8)
+        else {
+            throw Errors.cannotReadStdin
+        }
+
+        return input
+    }
+
+    func writeOutput(_ wrapper: FileWrapper) throws {
+        if shouldWriteToStdout {
+            guard wrapper.isRegularFile, let contents = wrapper.regularFileContents else {
+                throw Errors.cannotWriteWrapperToStdout
+            }
+
+            FileHandle.standardOutput.write(contents)
+        } else {
+            let writeURL = outputURL(extension: formatter.type.defaultExtension)
+            try wrapper.write(to: writeURL, options: .atomic, originalContentsURL: nil)
+        }
+    }
+
+    var shouldWriteToStdout: Bool { input == "-" && output == nil }
 
     func outputURL(extension: String) -> URL {
         if let output = output {

@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "MakeColors",
     platforms: [
-        .macOS(.v10_15),
+        .macOS("10.15.4"),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", .upToNextMinor(from: "0.3.1")),
