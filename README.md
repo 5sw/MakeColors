@@ -13,6 +13,26 @@ brew install make-colors
 
 If you don’t use Homebrew you can also install directly from source. Clone the repository or download the release and run `make install` inside the working copy.
 
+## Usage
+
+```
+USAGE: make-colors <input> [--ios] [--android] [--html] [--prefix <prefix>] [--output <output>]
+
+ARGUMENTS:
+  <input>                 The color list to process. 
+        Use - to process the standard input.
+
+OPTIONS:
+  --ios/--android/--html  The formatter to use (default: ios)
+  --prefix <prefix>       Prefix for color names 
+  --output <output>       Output file to write. 
+        Use - for standard output.
+        Default is the input file name with the appropriate file extension. If
+        the input is read from the standard input the default is standard
+        output.
+  -h, --help              Show help information.
+```
+
 ## Input format
 
 Each line in your input contains one color definition. That is a name followed by the actual color. We support RGB colors in a few formats similar to CSS:

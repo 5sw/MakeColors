@@ -28,17 +28,36 @@ enum Errors: Error {
     case cannotReadStdin
 }
 
+enum HelpTexts {
+    static let input = ArgumentHelp(
+        "The color list to process.",
+        discussion: """
+        Use - to process the standard input.
+        """
+    )
+
+    static let output = ArgumentHelp(
+        "Output file to write.",
+        discussion: """
+        Use - for standard output.
+        Default is the input file name with the appropriate file extension. \
+        If the input is - the default is standard output.
+        Note that asset catalogs cannot be written to standard output.
+        """
+    )
+}
+
 public final class MakeColors: ParsableCommand, Context {
-    @Argument(help: "The color list to proces")
+    @Argument(help: HelpTexts.input)
     var input: String
 
-    @Flag(help: "The formatter to use")
+    @Flag(help: "The formatter to use.")
     private var formatter = GeneratorOption.allCases[0]
 
-    @Option(help: "Prefix for color names")
+    @Option(help: "Prefix for color names.")
     var prefix: String?
 
-    @Option(help: "Output file")
+    @Option(help: HelpTexts.output)
     var output: String?
 
     public init() {}
@@ -103,7 +122,7 @@ public final class MakeColors: ParsableCommand, Context {
         }
     }
 
-    var shouldWriteToStdout: Bool { input == "-" && output == nil }
+    var shouldWriteToStdout: Bool { output == "-" || (input == "-" && output == nil) }
 
     func outputURL(extension: String) -> URL {
         if let output = output {
