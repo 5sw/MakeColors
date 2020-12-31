@@ -18,16 +18,19 @@ If you don’t use Homebrew you can also install directly from source. Clone the
 Each line in your input contains one color definition. That is a name followed by the actual color. We support RGB colors in a few formats similar to CSS:
 
 ```
-Color/Color1 #fff
-Color/Color2 #abcdeff0
-Color/Color3 rgb(12, 13, 53)
-Color/Color4 rgba(250, 250, 250, 128)
+Base/Green #8fd151
+Base/PaleGreen #d0f9a9
+Base/Red rgb(249, 39, 7)
+TransparentRed rgba(255, 0, 0, 128)
+Base/Yellow #ff0
 ```
 
 Colors can also reference other colors by prefixing them with an `@` sign:
 
 ```
-ColorAlias @Color/Color1
+Error @Base/Red
+Warning @Base/Yellow
+Good @Base/Green
 ```
 
 ## Output format
@@ -36,13 +39,38 @@ ColorAlias @Color/Color1
 
 The optional prefix followed by a `/` is added in front of the color name. Then for each part separate by / a new folder that provides namespace is inserted in the asset catalogs. Spaces are inserted between CamelCase words. Color references are inserted as copies of the original color.
 
+For the given example input the generated asset catalog looks like this: 
+
+![](Docs/assetcatalog.png)
+
 ### Android resource XML (`--android`)
 
 The optional prefix, followed by a underscore is added in front of the name. Names are converted from CamelCase to snake_case and / is replaced by underscores as well. Color references the generated color resource also references the original color.
 
+The generated XML for the example input looks like this:
+
+```
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bla_base_green">#8FD151</color>
+    <color name="bla_base_pale_green">#D0F9A9</color>
+    <color name="bla_base_red">#F92707</color>
+    <color name="bla_base_yellow">#FFFF00</color>
+    <color name="bla_transparent_red">#FF000080</color>
+    <color name="bla_error">@color/bla_base_red</color>
+    <color name="bla_good">@color/bla_base_green</color>
+    <color name="bla_warning">@color/bla_base_yellow</color>
+</resources>
+</xml>
+```
+
 ### HTML preview (`--html`)
 
 Generates a simple HTML table with the color names, values and a sample.
+
+The generated HTML looks like this:
+
+![](Docs/html.png)
 
 ## Future work
 
