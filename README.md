@@ -52,14 +52,14 @@ The generated XML for the example input looks like this:
 ```
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="bla_base_green">#8FD151</color>
-    <color name="bla_base_pale_green">#D0F9A9</color>
-    <color name="bla_base_red">#F92707</color>
-    <color name="bla_base_yellow">#FFFF00</color>
-    <color name="bla_transparent_red">#FF000080</color>
-    <color name="bla_error">@color/bla_base_red</color>
-    <color name="bla_good">@color/bla_base_green</color>
-    <color name="bla_warning">@color/bla_base_yellow</color>
+    <color name="base_green">#8FD151</color>
+    <color name="base_pale_green">#D0F9A9</color>
+    <color name="base_red">#F92707</color>
+    <color name="base_yellow">#FFFF00</color>
+    <color name="transparent_red">#FF000080</color>
+    <color name="error">@color/base_red</color>
+    <color name="good">@color/base_green</color>
+    <color name="warning">@color/base_yellow</color>
 </resources>
 </xml>
 ```
