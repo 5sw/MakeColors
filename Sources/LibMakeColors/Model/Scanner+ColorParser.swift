@@ -27,6 +27,10 @@ extension Scanner {
             return Color(components)
         }
 
+        if string("white"), let arguments = argumentList(min: 1, max: 2) {
+            return Color(white: arguments)
+        }
+
         return nil
     }
 
@@ -89,6 +93,26 @@ extension Scanner {
         }
 
         return result
+    }
+
+    // swiftlint:disable:next discouraged_optional_collection
+    func argumentList(_ count: Int) -> [UInt8]? {
+        argumentList(min: count, max: count)
+    }
+
+    // swiftlint:disable:next discouraged_optional_collection
+    func argumentList(min: Int, max: Int? = nil) -> [UInt8]? {
+        let max = max ?? Int.max
+        guard
+            string("("),
+            let arguments = commaSeparated(),
+            string(")"),
+            (min...max) ~= arguments.count
+        else {
+            return nil
+        }
+
+        return arguments
     }
 
     // swiftlint:disable:next discouraged_optional_collection

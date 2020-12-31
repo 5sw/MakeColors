@@ -19,6 +19,14 @@ struct Color: CustomStringConvertible, Equatable {
         alpha = array.count == 4 ? array[3] : 0xFF
     }
 
+    init(white array: [UInt8]) {
+        precondition(array.count == 1 || array.count == 2)
+        red = array[0]
+        green = array[0]
+        blue = array[0]
+        alpha = array.count == 2 ? array[1] : 0xFF
+    }
+
     var description: String {
         let alphaSuffix = alpha != 0xFF ? String(format: "%02X", alpha) : ""
         return String(format: "#%02X%02X%02X%@", red, green, blue, alphaSuffix)

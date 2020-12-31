@@ -43,4 +43,28 @@ final class ColorParserTest: XCTestCase {
         let color = scanner.color()
         XCTAssertEqual(Color(red: 1, green: 2, blue: 3, alpha: 4), color)
     }
+
+    func testScanningWhite() throws {
+        let scanner = Scanner(string: "white(255)")
+        let color = scanner.color()
+        XCTAssertEqual(Color(red: 255, green: 255, blue: 255, alpha: 255), color)
+    }
+
+    func testScanningWhiteWithAlpha() throws {
+        let scanner = Scanner(string: "white(255, 128)")
+        let color = scanner.color()
+        XCTAssertEqual(Color(red: 255, green: 255, blue: 255, alpha: 128), color)
+    }
+
+    func testWhiteFailsWithoutArguments() throws {
+        let scanner = Scanner(string: "white()")
+        let color = scanner.color()
+        XCTAssertNil(color)
+    }
+
+    func testWhiteFailsWith3Arguments() throws {
+        let scanner = Scanner(string: "white(1,2,3)")
+        let color = scanner.color()
+        XCTAssertNil(color)
+    }
 }
