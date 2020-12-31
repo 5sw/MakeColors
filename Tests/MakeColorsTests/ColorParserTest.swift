@@ -8,6 +8,12 @@ final class ColorParserTest: XCTestCase {
         XCTAssertEqual(Color(red: 0xAA, green: 0xBB, blue: 0xCC), color)
     }
 
+    func testScanningThreeDigitColorUppercase() throws {
+        let scanner = Scanner(string: "#ABc")
+        let color = scanner.color()
+        XCTAssertEqual(Color(red: 0xAA, green: 0xBB, blue: 0xCC), color)
+    }
+
     func testScanningFourDigitColor() throws {
         let scanner = Scanner(string: "#abcd")
         let color = scanner.color()
