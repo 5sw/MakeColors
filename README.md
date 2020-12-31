@@ -11,6 +11,8 @@ brew tap 5sw/makecolors
 brew install make-colors
 ```
 
+If you don’t use Homebrew you can also install directly from source. Clone the repository or download the release and run `make install` inside the working copy.
+
 ## Input format
 
 Each line in your input contains one color definition. That is a name followed by the actual color. We support RGB colors in a few formats similar to CSS:
