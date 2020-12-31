@@ -111,7 +111,7 @@ private extension Scanner {
 }
 
 private extension CharacterSet {
-    static let hex = CharacterSet(charactersIn: "0123456789abcdef")
+    static let hex = CharacterSet(charactersIn: "0123456789abcdefABCDEF")
     static let name = alphanumerics.union(CharacterSet(charactersIn: "_/"))
 }
 
