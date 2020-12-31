@@ -60,6 +60,9 @@ public final class MakeColors: ParsableCommand, Context {
     @Option(help: HelpTexts.output)
     var output: String?
 
+    @Flag(help: "List read colors on console.")
+    var dump = false
+
     public init() {}
 
     public func run() throws {
@@ -68,19 +71,8 @@ public final class MakeColors: ParsableCommand, Context {
 
         let data = try scanner.colorList()
 
-        for (key, color) in data.sorted() {
-            let resolved = try data.resolve(key)
-            switch color {
-            case .color:
-                print(key.insertCamelCaseSeparators(), resolved, separator: ": ")
-
-            case let .reference(referenced):
-                print(
-                    "\(key.insertCamelCaseSeparators()) (@\(referenced.insertCamelCaseSeparators()))",
-                    resolved,
-                    separator: ": "
-                )
-            }
+        if dump {
+            try dump(data: data)
         }
 
         let generator = formatter.type.init(context: self)
@@ -107,6 +99,23 @@ public final class MakeColors: ParsableCommand, Context {
         }
 
         return input
+    }
+
+    func dump(data: [String: ColorDef]) throws {
+        for (key, color) in data.sorted() {
+            let resolved = try data.resolve(key)
+            switch color {
+            case .color:
+                print(key.insertCamelCaseSeparators(), resolved, separator: ": ")
+
+            case let .reference(referenced):
+                print(
+                    "\(key.insertCamelCaseSeparators()) (@\(referenced.insertCamelCaseSeparators()))",
+                    resolved,
+                    separator: ": "
+                )
+            }
+        }
     }
 
     func writeOutput(_ wrapper: FileWrapper) throws {
