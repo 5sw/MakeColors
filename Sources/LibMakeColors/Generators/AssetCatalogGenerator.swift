@@ -1,7 +1,7 @@
 import Foundation
 
 final class AssetCatalogGenerator: Generator {
-    static let defaultExtension = "xcasset"
+    static let defaultExtension = "xcassets"
     static let option = "ios"
 
     let context: Context
