@@ -67,7 +67,7 @@ private extension Color {
             "color" : {
                 "color-space" : "srgb",
                 "components" : {
-                "alpha" : "\(Float(alpha) / 256)",
+                "alpha" : "0x\(String(alpha, radix: 16))",
                 "blue" : "0x\(String(blue, radix: 16))",
                 "green" : "0x\(String(green, radix: 16))",
                 "red" : "0x\(String(red, radix: 16))"
