@@ -86,8 +86,38 @@ final class ColorParserTest: XCTestCase {
         XCTAssertTrue(scanner.isAtEnd)
     }
 
+    func testScanningDegreesAsByte() throws {
+        let scanner = Scanner(string: "128")
+        XCTAssertEqual(scanner.degrees(), 180)
+    }
+
+    func testScanningDegreesAsPercentage() throws {
+        let scanner = Scanner(string: "50%")
+        XCTAssertEqual(scanner.degrees(), 180)
+    }
+
+    func testScanningDegrees() throws {
+        let scanner = Scanner(string: "120°")
+        XCTAssertEqual(scanner.degrees(), 120)
+    }
+
+    func testScanningDegreesWithDegSuffix() throws {
+        let scanner = Scanner(string: "120 deg")
+        XCTAssertEqual(scanner.degrees(), 120)
+    }
+
+    func testScanningHSVColor() throws {
+        XCTAssertEqual(scanColor("hsv(60°, 255, 100%)"), Color(red: 0xFF, green: 0xFF, blue: 0))
+    }
+
+    func testScanningHSVAColor() throws {
+        XCTAssertEqual(scanColor("hsva(60°, 50%, 255, 99)"), Color(red: 0xFF, green: 0xFF, blue: 128, alpha: 99))
+    }
+
     private func scanColor(_ input: String) -> Color? {
         let scanner = Scanner(string: input)
-        return scanner.color()
+        let result = scanner.color()
+        XCTAssertTrue(result == nil || scanner.isAtEnd)
+        return result
     }
 }

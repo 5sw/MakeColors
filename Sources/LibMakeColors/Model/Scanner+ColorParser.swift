@@ -31,7 +31,56 @@ extension Scanner {
             return Color(white: arguments)
         }
 
+        if string("hsva") {
+            return readHSV(alpha: true)
+        }
+
+        if string("hsv") {
+            return readHSV(alpha: false)
+        }
+
         return nil
+    }
+
+    private func readHSV(alpha readAlpha: Bool) -> Color? {
+        guard
+            string("("),
+            let hue = degrees(),
+            string(","),
+            let saturation = component(),
+            string(","),
+            let value = component()
+        else { return nil }
+
+        let alpha: UInt8
+
+        if readAlpha {
+            guard
+                string(","),
+                let value = component()
+            else { return nil }
+            alpha = value
+        } else {
+            alpha = 0xFF
+        }
+
+        guard string(")") else { return nil }
+
+        return Color(hue: hue, saturation: saturation, value: value, alpha: alpha)
+    }
+
+    func degrees() -> Int? {
+        guard let int = scanInt() else { return nil }
+
+        if string("%") {
+            guard 0...100 ~= int else { return nil }
+            return (360 * int) / 100
+        } else if string("°") || string("deg") {
+            return int
+        } else {
+            guard 0...0xFF ~= int else { return nil }
+            return (360 * int) / 0xFF
+        }
     }
 
     func colorReference() -> String? {
