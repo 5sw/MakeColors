@@ -19,11 +19,11 @@ extension Scanner {
             }
         }
 
-        if string("rgba"), string("("), let components = commaSeparated(), components.count == 4, string(")") {
+        if string("rgba"), let components = argumentList(4) {
             return Color(components)
         }
 
-        if string("rgb"), string("("), let components = commaSeparated(), components.count == 3, string(")") {
+        if string("rgb"), let components = argumentList(3) {
             return Color(components)
         }
 
