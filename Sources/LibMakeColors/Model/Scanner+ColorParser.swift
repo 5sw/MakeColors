@@ -182,6 +182,7 @@ extension Scanner {
         }
 
         if string("%") {
+            guard 0...100 ~= int else { return nil }
             int = int * 0xFF / 100
         }
 
