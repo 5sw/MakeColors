@@ -57,6 +57,35 @@ final class ColorParserTest: XCTestCase {
         XCTAssertNil(color)
     }
 
+    func testScanningColorWithPercentage() throws {
+        let color = scanColor("rgba(100%, 0, 50%, 100%)")
+        XCTAssertEqual(color, Color(red: 255, green: 0, blue: 127, alpha: 255))
+    }
+
+    func testReadingComponentAsByte() throws {
+        let scanner = Scanner(string: "128")
+        XCTAssertEqual(scanner.component(), 128)
+        XCTAssertTrue(scanner.isAtEnd)
+    }
+
+    func testReadingComponentAs100Percent() throws {
+        let scanner = Scanner(string: "100%")
+        XCTAssertEqual(scanner.component(), 0xFF)
+        XCTAssertTrue(scanner.isAtEnd)
+    }
+
+    func testReadingComponentAs0Percent() throws {
+        let scanner = Scanner(string: "0%")
+        XCTAssertEqual(scanner.component(), 0)
+        XCTAssertTrue(scanner.isAtEnd)
+    }
+
+    func testReadingComponentAs50PercentRoundsDown() throws {
+        let scanner = Scanner(string: "50%")
+        XCTAssertEqual(scanner.component(), 127)
+        XCTAssertTrue(scanner.isAtEnd)
+    }
+
     private func scanColor(_ input: String) -> Color? {
         let scanner = Scanner(string: input)
         return scanner.color()

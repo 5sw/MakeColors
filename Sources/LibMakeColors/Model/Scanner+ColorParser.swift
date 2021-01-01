@@ -119,12 +119,24 @@ extension Scanner {
     func commaSeparated() -> [UInt8]? {
         var result: [UInt8] = []
         repeat {
-            guard let int = scanInt(), let component = UInt8(exactly: int) else {
+            guard let component = self.component() else {
                 return nil
             }
             result.append(component)
         } while string(",")
         return result
+    }
+
+    func component() -> UInt8? {
+        guard var int = scanInt() else {
+            return nil
+        }
+
+        if string("%") {
+            int = int * 0xFF / 100
+        }
+
+        return UInt8(exactly: int)
     }
 }
 
