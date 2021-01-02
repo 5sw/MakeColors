@@ -45,12 +45,19 @@ Base/Red rgb(249, 39, 7)
 TransparentRed rgba(255, 0, 0, 128)
 Base/Yellow #ff0
 ```
+
 Grayscale colors can be produced with the `white(value)` and `white(value, alpha)` syntax. A value of zero means black while a value of 255 is pure white. 
 
 ```
 Black white(0)
 MediumGray white(128)
 TransparentGray white(128, 128)
+```
+
+HSV colors can be specified as `hsv(hue, saturation, value)` or `hsva(hue, saturation, value, alpha)` syntax. Hue is specified as degrees with the `°` or `deg` suffix.
+
+```
+HSV/Yellow hsv(60°, 255, 255)
 ```
 
 Colors can also reference other colors by prefixing them with an `@` sign:
