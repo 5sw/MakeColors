@@ -67,10 +67,10 @@ private extension Color {
             "color" : {
                 "color-space" : "srgb",
                 "components" : {
-                "alpha" : "0x\(String(alpha, radix: 16))",
-                "blue" : "0x\(String(blue, radix: 16))",
-                "green" : "0x\(String(green, radix: 16))",
-                "red" : "0x\(String(red, radix: 16))"
+                "alpha" : "\(Double(alpha) / 0xFF)",
+                "blue" : "0x\(blue, radix: 16, width: 2)",
+                "green" : "0x\(green, radix: 16, width: 2)",
+                "red" : "0x\(red, radix: 16, width: 2)"
                 }
             },
             "idiom" : "universal"
@@ -85,6 +85,22 @@ private extension Color {
         FileWrapper(directoryWithFileWrappers: [
             "Contents.json": FileWrapper(json()),
         ])
+    }
+}
+
+extension String.StringInterpolation {
+    mutating func appendInterpolation<I: BinaryInteger>(
+        _ value: I,
+        radix: Int,
+        width: Int = 0,
+        uppercase: Bool = true
+    ) {
+        var string = String(value, radix: radix, uppercase: uppercase)
+        if width > string.count {
+            string.insert(contentsOf: String(repeating: "0", count: width - string.count), at: string.startIndex)
+        }
+
+        appendLiteral(string)
     }
 }
 
