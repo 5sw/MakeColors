@@ -1,0 +1,10 @@
+Base/Green #8fd151
+Base/PaleGreen #d0f9a9
+Base/Red rgb(249, 39, 7)
+TransparentRed rgba(255, 0, 0, 128)
+Base/Yellow #ff0
+
+Error @Base/Red
+Warning @Base/Yellow
+Good @Base/Green
+
