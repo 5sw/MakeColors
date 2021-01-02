@@ -58,7 +58,7 @@ private let infoTag = """
 }
 """
 
-private extension Color {
+extension Color {
     func json() -> String {
         """
         {

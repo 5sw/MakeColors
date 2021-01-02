@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "RBBJSON",
+        "repositoryURL": "https://github.com/robb/RBBJSON",
+        "state": {
+          "branch": "main",
+          "revision": "102c970283e105d7c5be2e29630db29c808c20eb",
+          "version": null
+        }
+      },
+      {
         "package": "swift-argument-parser",
         "repositoryURL": "https://github.com/apple/swift-argument-parser",
         "state": {

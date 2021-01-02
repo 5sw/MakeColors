@@ -10,6 +10,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", .upToNextMinor(from: "0.3.1")),
+        .package(url: "https://github.com/robb/RBBJSON", .branch("main")),
     ],
     targets: [
         .target(
@@ -26,7 +27,10 @@ let package = Package(
         ),
         .testTarget(
             name: "MakeColorsTests",
-            dependencies: ["LibMakeColors"]
+            dependencies: [
+                "LibMakeColors",
+                .product(name: "RBBJSON", package: "RBBJSON"),
+            ]
         ),
     ]
 )
