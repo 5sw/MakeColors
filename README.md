@@ -109,7 +109,6 @@ The generated HTML looks like this:
 
 ## Future work
 
-- Support other color formats (HSV, ...)
 - Calculate derived colors (blend, change hue/saturation/brightness/alpha)
 - Support for dark/light mode
 - Improved error reporting in the parser
