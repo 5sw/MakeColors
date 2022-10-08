@@ -66,10 +66,8 @@ public final class MakeColors: ParsableCommand, Context {
     public init() {}
 
     public func run() throws {
-        let scanner = Scanner(string: try readInput())
-        scanner.charactersToBeSkipped = .whitespaces
-
-        let data = try scanner.colorList()
+        let importer = ListImporter(source: input)
+        let data = try importer.read()
 
         if dump {
             try dump(data: data)
@@ -79,26 +77,6 @@ public final class MakeColors: ParsableCommand, Context {
         let fileWrapper = try generator.generate(data: data)
 
         try writeOutput(fileWrapper)
-    }
-
-    func readInput() throws -> String {
-        if input == "-" {
-            return try readStdin()
-        }
-
-        let url = URL(fileURLWithPath: input)
-        return try String(contentsOf: url)
-    }
-
-    func readStdin() throws -> String {
-        guard
-            let data = try FileHandle.standardInput.readToEnd(),
-            let input = String(data: data, encoding: .utf8)
-        else {
-            throw Errors.cannotReadStdin
-        }
-
-        return input
     }
 
     func dump(data: [String: ColorDef]) throws {

@@ -110,7 +110,7 @@ extension Scanner {
 
     func colorLine() -> (String, ColorDef)? {
         guard
-            let name = self.name(),
+            let name = name(),
             let def = colorDef(),
             endOfLine()
         else {
@@ -168,7 +168,7 @@ extension Scanner {
     func commaSeparated() -> [UInt8]? {
         var result: [UInt8] = []
         repeat {
-            guard let component = self.component() else {
+            guard let component = component() else {
                 return nil
             }
             result.append(component)
