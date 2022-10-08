@@ -1,6 +1,6 @@
 import Foundation
 
-protocol Generator: class {
+protocol Generator: AnyObject {
     static var defaultExtension: String { get }
     static var option: String { get }
 
@@ -9,7 +9,7 @@ protocol Generator: class {
     func generate(data: [String: ColorDef]) throws -> FileWrapper
 }
 
-protocol Context: class {
+protocol Context: AnyObject {
     var prefix: String? { get }
 }
 
