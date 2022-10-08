@@ -19,6 +19,35 @@ private struct GeneratorOption: EnumerableFlag, CustomStringConvertible {
     }
 }
 
+private struct ImporterOption: CaseIterable, ExpressibleByArgument, CustomStringConvertible {
+    static let allCases: [ImporterOption] = [
+        .list,
+    ]
+
+    static let list = ImporterOption(type: ListImporter.self)
+
+    let type: Importer.Type
+
+    init(type: Importer.Type) {
+        self.type = type
+    }
+
+    init?(argument: String) {
+        guard let found = Self.allCases.first(where: { $0.description.caseInsensitiveCompare(argument) == .orderedSame }) else {
+            return nil
+        }
+        self = found
+    }
+
+    var description: String {
+        type.option
+    }
+
+    static func == (lhs: ImporterOption, rhs: ImporterOption) -> Bool {
+        lhs.type == rhs.type
+    }
+}
+
 enum Errors: Error {
     case syntaxError
     case duplicateColor(String)
@@ -54,6 +83,9 @@ public final class MakeColors: ParsableCommand, Context {
     @Flag(help: "The formatter to use.")
     private var formatter = GeneratorOption.allCases[0]
 
+    @Option(help: "The importer to use.")
+    private var importer = ImporterOption.list
+
     @Option(help: "Prefix for color names.")
     var prefix: String?
 
@@ -66,7 +98,7 @@ public final class MakeColors: ParsableCommand, Context {
     public init() {}
 
     public func run() throws {
-        let importer = ListImporter(source: input)
+        let importer = try importer.type.init(source: input)
         let data = try importer.read()
 
         if dump {
