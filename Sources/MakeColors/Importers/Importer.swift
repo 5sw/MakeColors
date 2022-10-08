@@ -1,7 +1,7 @@
 protocol Importer {
     init(source: String) throws
 
-    func read() throws -> [String: ColorDef]
+    func read() async throws -> [String: ColorDef]
 
     static var option: String { get }
 }

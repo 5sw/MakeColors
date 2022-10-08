@@ -80,7 +80,7 @@ enum HelpTexts {
 }
 
 @main
-public final class MakeColors: ParsableCommand, Context {
+public final class MakeColors: AsyncParsableCommand, Context {
     @Argument(help: HelpTexts.input)
     var input: String
 
@@ -101,9 +101,9 @@ public final class MakeColors: ParsableCommand, Context {
 
     public init() {}
 
-    public func run() throws {
+    public func run() async throws {
         let importer = try importer.type.init(source: input)
-        let data = try importer.read()
+        let data = try await importer.read()
 
         if dump {
             try dump(data: data)
