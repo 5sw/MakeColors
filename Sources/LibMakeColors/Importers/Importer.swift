@@ -8,6 +8,6 @@ protocol Importer {
 
 extension Importer {
     static var option: String {
-        String(String(describing: self).droppingSuffix("Importer"))
+        String(describing: self).droppingSuffix("Importer").lowercased()
     }
 }
