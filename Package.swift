@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.7
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -10,17 +10,11 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", .upToNextMinor(from: "0.3.1")),
-        .package(url: "https://github.com/robb/RBBJSON", .branch("main")),
+        .package(url: "https://github.com/robb/RBBJSON", branch: "main"),
     ],
     targets: [
-        .target(
+        .executableTarget(
             name: "MakeColors",
-            dependencies: [
-                "LibMakeColors",
-            ]
-        ),
-        .target(
-            name: "LibMakeColors",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
             ]
@@ -28,7 +22,7 @@ let package = Package(
         .testTarget(
             name: "MakeColorsTests",
             dependencies: [
-                "LibMakeColors",
+                "MakeColors",
                 .product(name: "RBBJSON", package: "RBBJSON"),
             ]
         ),

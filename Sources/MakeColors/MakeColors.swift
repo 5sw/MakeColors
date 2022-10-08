@@ -79,6 +79,7 @@ enum HelpTexts {
     )
 }
 
+@main
 public final class MakeColors: ParsableCommand, Context {
     @Argument(help: HelpTexts.input)
     var input: String

@@ -1,4 +1,4 @@
-@testable import LibMakeColors
+@testable import MakeColors
 import XCTest
 
 final class ColorParserTest: XCTestCase {
