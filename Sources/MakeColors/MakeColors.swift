@@ -22,6 +22,7 @@ private struct GeneratorOption: EnumerableFlag, CustomStringConvertible {
 private struct ImporterOption: CaseIterable, ExpressibleByArgument, CustomStringConvertible {
     static let allCases: [ImporterOption] = [
         .list,
+        .init(type: FigmaImporter.self),
     ]
 
     static let list = ImporterOption(type: ListImporter.self)
