@@ -33,7 +33,10 @@ private struct ImporterOption: CaseIterable, ExpressibleByArgument, CustomString
     }
 
     init?(argument: String) {
-        guard let found = Self.allCases.first(where: { $0.description.caseInsensitiveCompare(argument) == .orderedSame }) else {
+        guard
+            let found = Self.allCases
+                .first(where: { $0.description.caseInsensitiveCompare(argument) == .orderedSame })
+        else {
             return nil
         }
         self = found
