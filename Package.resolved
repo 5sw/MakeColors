@@ -1,25 +1,23 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "RBBJSON",
-        "repositoryURL": "https://github.com/robb/RBBJSON",
-        "state": {
-          "branch": "main",
-          "revision": "102c970283e105d7c5be2e29630db29c808c20eb",
-          "version": null
-        }
-      },
-      {
-        "package": "swift-argument-parser",
-        "repositoryURL": "https://github.com/apple/swift-argument-parser",
-        "state": {
-          "branch": null,
-          "revision": "92646c0cdbaca076c8d3d0207891785b3379cbff",
-          "version": "0.3.1"
-        }
+  "pins" : [
+    {
+      "identity" : "rbbjson",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/robb/RBBJSON",
+      "state" : {
+        "branch" : "main",
+        "revision" : "102c970283e105d7c5be2e29630db29c808c20eb"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "swift-argument-parser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-argument-parser",
+      "state" : {
+        "revision" : "9f39744e025c7d377987f30b03770805dcb0bcd1",
+        "version" : "1.1.4"
+      }
+    }
+  ],
+  "version" : 2
 }

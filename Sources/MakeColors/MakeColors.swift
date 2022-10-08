@@ -19,6 +19,39 @@ private struct GeneratorOption: EnumerableFlag, CustomStringConvertible {
     }
 }
 
+private struct ImporterOption: CaseIterable, ExpressibleByArgument, CustomStringConvertible {
+    static let allCases: [ImporterOption] = [
+        .list,
+        .init(type: FigmaImporter.self),
+    ]
+
+    static let list = ImporterOption(type: ListImporter.self)
+
+    let type: Importer.Type
+
+    init(type: Importer.Type) {
+        self.type = type
+    }
+
+    init?(argument: String) {
+        guard
+            let found = Self.allCases
+                .first(where: { $0.description.caseInsensitiveCompare(argument) == .orderedSame })
+        else {
+            return nil
+        }
+        self = found
+    }
+
+    var description: String {
+        type.option
+    }
+
+    static func == (lhs: ImporterOption, rhs: ImporterOption) -> Bool {
+        lhs.type == rhs.type
+    }
+}
+
 enum Errors: Error {
     case syntaxError
     case duplicateColor(String)
@@ -47,12 +80,16 @@ enum HelpTexts {
     )
 }
 
-public final class MakeColors: ParsableCommand, Context {
+@main
+public final class MakeColors: AsyncParsableCommand, Context {
     @Argument(help: HelpTexts.input)
     var input: String
 
     @Flag(help: "The formatter to use.")
     private var formatter = GeneratorOption.allCases[0]
+
+    @Option(help: "The importer to use.")
+    private var importer = ImporterOption.list
 
     @Option(help: "Prefix for color names.")
     var prefix: String?
@@ -65,11 +102,9 @@ public final class MakeColors: ParsableCommand, Context {
 
     public init() {}
 
-    public func run() throws {
-        let scanner = Scanner(string: try readInput())
-        scanner.charactersToBeSkipped = .whitespaces
-
-        let data = try scanner.colorList()
+    public func run() async throws {
+        let importer = try importer.type.init(source: input)
+        let data = try await importer.read()
 
         if dump {
             try dump(data: data)
@@ -78,27 +113,7 @@ public final class MakeColors: ParsableCommand, Context {
         let generator = formatter.type.init(context: self)
         let fileWrapper = try generator.generate(data: data)
 
-        try writeOutput(fileWrapper)
-    }
-
-    func readInput() throws -> String {
-        if input == "-" {
-            return try readStdin()
-        }
-
-        let url = URL(fileURLWithPath: input)
-        return try String(contentsOf: url)
-    }
-
-    func readStdin() throws -> String {
-        guard
-            let data = try FileHandle.standardInput.readToEnd(),
-            let input = String(data: data, encoding: .utf8)
-        else {
-            throw Errors.cannotReadStdin
-        }
-
-        return input
+        try writeOutput(fileWrapper, name: output ?? "\(importer.outputName).\(formatter.type.defaultExtension)")
     }
 
     func dump(data: [String: ColorDef]) throws {
@@ -118,7 +133,7 @@ public final class MakeColors: ParsableCommand, Context {
         }
     }
 
-    func writeOutput(_ wrapper: FileWrapper) throws {
+    func writeOutput(_ wrapper: FileWrapper, name: String) throws {
         if shouldWriteToStdout {
             guard wrapper.isRegularFile, let contents = wrapper.regularFileContents else {
                 throw Errors.cannotWriteWrapperToStdout
@@ -126,19 +141,10 @@ public final class MakeColors: ParsableCommand, Context {
 
             FileHandle.standardOutput.write(contents)
         } else {
-            let writeURL = outputURL(extension: formatter.type.defaultExtension)
+            let writeURL = URL(fileURLWithPath: name)
             try wrapper.write(to: writeURL, options: .atomic, originalContentsURL: nil)
         }
     }
 
     var shouldWriteToStdout: Bool { output == "-" || (input == "-" && output == nil) }
-
-    func outputURL(extension: String) -> URL {
-        if let output = output {
-            return URL(fileURLWithPath: output)
-        } else {
-            let basename = URL(fileURLWithPath: input).deletingPathExtension().lastPathComponent
-            return URL(fileURLWithPath: basename).appendingPathExtension(`extension`)
-        }
-    }
 }

@@ -1,4 +1,4 @@
-@testable import LibMakeColors
+@testable import MakeColors
 import RBBJSON
 import XCTest
 
