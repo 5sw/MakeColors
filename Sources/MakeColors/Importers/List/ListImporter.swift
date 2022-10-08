@@ -2,9 +2,11 @@ import Foundation
 
 struct ListImporter: Importer {
     let input: String
+    var outputName: String
 
     init(source: String) {
         input = source
+        outputName = URL(fileURLWithPath: source).deletingPathExtension().lastPathComponent
     }
 
     func read() throws -> [String: ColorDef] {

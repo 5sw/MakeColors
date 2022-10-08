@@ -113,7 +113,7 @@ public final class MakeColors: AsyncParsableCommand, Context {
         let generator = formatter.type.init(context: self)
         let fileWrapper = try generator.generate(data: data)
 
-        try writeOutput(fileWrapper)
+        try writeOutput(fileWrapper, name: output ?? "\(importer.outputName).\(formatter.type.defaultExtension)")
     }
 
     func dump(data: [String: ColorDef]) throws {
@@ -133,7 +133,7 @@ public final class MakeColors: AsyncParsableCommand, Context {
         }
     }
 
-    func writeOutput(_ wrapper: FileWrapper) throws {
+    func writeOutput(_ wrapper: FileWrapper, name: String) throws {
         if shouldWriteToStdout {
             guard wrapper.isRegularFile, let contents = wrapper.regularFileContents else {
                 throw Errors.cannotWriteWrapperToStdout
@@ -141,19 +141,10 @@ public final class MakeColors: AsyncParsableCommand, Context {
 
             FileHandle.standardOutput.write(contents)
         } else {
-            let writeURL = outputURL(extension: formatter.type.defaultExtension)
+            let writeURL = URL(fileURLWithPath: name)
             try wrapper.write(to: writeURL, options: .atomic, originalContentsURL: nil)
         }
     }
 
     var shouldWriteToStdout: Bool { output == "-" || (input == "-" && output == nil) }
-
-    func outputURL(extension: String) -> URL {
-        if let output = output {
-            return URL(fileURLWithPath: output)
-        } else {
-            let basename = URL(fileURLWithPath: input).deletingPathExtension().lastPathComponent
-            return URL(fileURLWithPath: basename).appendingPathExtension(`extension`)
-        }
-    }
 }

@@ -3,6 +3,8 @@ protocol Importer {
 
     func read() async throws -> [String: ColorDef]
 
+    var outputName: String { get }
+
     static var option: String { get }
 }
 

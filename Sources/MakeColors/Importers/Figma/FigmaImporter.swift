@@ -10,6 +10,7 @@ enum FigmaErrors: Error {
 class FigmaImporter: Importer {
     let key: String
     let token: String
+    let outputName: String
 
     required init(source: String) throws {
         // https://www.figma.com/file/:key/:title
@@ -23,6 +24,7 @@ class FigmaImporter: Importer {
         }
 
         key = url.pathComponents[2]
+        outputName = url.pathComponents[3]
 
         guard let token = ProcessInfo.processInfo.environment["FIGMA_TOKEN"] else {
             throw FigmaErrors.missingToken
